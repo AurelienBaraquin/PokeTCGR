@@ -17,7 +17,18 @@ export class CardPile {
         if (this.cards.length === 0) return null;
         const card = this.cards.pop();
         this.updateDisplay();
+        card.disableInteractive();
         return card;
+    }
+
+    removeCard(card) {
+        const cardIndex = this.cards.indexOf(card);
+        if (cardIndex !== -1) {
+            card.disableInteractive();
+            card.container.destroy();
+            this.cards.splice(cardIndex, 1);
+            this.updateDisplay();
+        }
     }
 
     shuffle() {
@@ -32,11 +43,8 @@ export class CardPile {
             card.container.x = this.x + index * 0.3;
             card.container.y = this.y - index * 0.5;
             card.container.setDepth(index);
-            card.container.disableInteractive(); // Désactive l'interactivité de toutes les cartes
+            card.container.disableInteractive();
         });
-
-        // Mise à jour interactivité après avoir actualisé l'affichage
-        this.updateInteractivity();
     }
 
     pickSpecificCard(cardName) {
@@ -55,15 +63,20 @@ export class CardPile {
 
     setInteractive(onClickCallback) {
         this.onClickCallback = onClickCallback;
-        this.updateInteractivity();
+        this.update();
     }
 
     updateInteractivity() {
-        this.cards.forEach(card => card.disableInteractive()); // désactive toutes les cartes
+        this.cards.forEach(card => card.updateInteractive(null));
     
         if (this.cards.length === 0 || !this.onClickCallback) return;
     
         const topCard = this.cards[this.cards.length - 1];
-        topCard.setInteractive(this.onClickCallback); // active uniquement la carte supérieure
-    }    
+        topCard.updateInteractive(this.onClickCallback);
+    }
+
+    update() {
+        this.updateDisplay();
+        this.updateInteractivity();
+    }
 }

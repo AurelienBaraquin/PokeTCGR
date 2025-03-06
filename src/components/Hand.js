@@ -1,29 +1,7 @@
 import { Card, CardWidth, CardHeight } from './Card.js';
+import { CardPile } from './CardPile.js';
 
-export class Hand {
-    constructor(scene, x, y, scale = 1) {
-        this.scene = scene;
-        this.cards = [];
-        this.x = x;
-        this.y = y;
-        this.scale = scale;
-    }
-
-    addCard(card) {
-        this.cards.push(card);
-        this.updateDisplay();
-    }
-
-    removeCard(card) {
-        const cardIndex = this.cards.indexOf(card);
-        if (cardIndex !== -1) {
-            this.cards.splice(cardIndex, 1);
-            this.updateDisplay();
-            return card;
-        }
-        return null;
-    }
-
+export class Hand extends CardPile {
     updateDisplay() {
         const spacingX = CardWidth() * this.scale * 0.3;
         const startX = this.x - ((this.cards.length - 1) * spacingX) / 2;
@@ -34,4 +12,17 @@ export class Hand {
             card.container.setDepth(index);
         });
     }
+
+    updateInteractivity() {
+        this.cards.forEach(card => {
+            card.updateInteractive(() => {
+                this.removeCard(card);
+            });
+        });
+    }
+
+    update() {
+        this.updateDisplay();
+        this.updateInteractivity();
+    }   
 }

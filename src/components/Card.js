@@ -27,6 +27,7 @@ export class Card {
         const { name, hp, type, attacks, imageKey } = data;
         this.container = scene.add.container(x, y);
         this.scale = scale;
+        this.data = data;
 
         // Reference size
         const width = CardWidth();
@@ -93,5 +94,16 @@ export class Card {
     disableInteractive() {
         this.container.disableInteractive();
         this.container.removeAllListeners('pointerdown');
-    }    
+    }
+
+    updateInteractive(callback) {
+        this.container.disableInteractive();
+        this.container.removeAllListeners('pointerdown');
+
+        if (callback) {
+            this.container.setSize(CardWidth(), CardHeight());
+            this.container.setInteractive({ useHandCursor: true });
+            this.container.on('pointerdown', callback);
+        }
+    }
 }

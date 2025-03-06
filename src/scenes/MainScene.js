@@ -47,10 +47,13 @@ export class MainScene extends Phaser.Scene {
         this.deck.setInteractive(() => {
             const drawnCard = this.deck.drawCard();
             if (drawnCard) {
-                drawnCard.disableInteractive();
                 this.hand.addCard(drawnCard);
-                this.hand.updateDisplay();
+                this.hand.update();
             }
-        });        
+            this.deck.update();
+        });
+
+        this.deck.update();
+        this.hand.update();
     }
 }
