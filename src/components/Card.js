@@ -26,6 +26,7 @@ export class Card {
     constructor(scene, data, scale = 1, x = 0, y = 0) {
         const { name, hp, type, attacks, imageKey } = data;
         this.container = scene.add.container(x, y);
+        this.scale = scale;
 
         // Reference size
         const width = CardWidth();
@@ -84,7 +85,7 @@ export class Card {
     }
 
     setInteractive(callback) {
-        this.container.setSize(CardWidth(), CardHeight());
+        this.container.setSize(CardWidth() * this.scale, CardHeight() * this.scale);
         this.container.setInteractive({ useHandCursor: true });
         this.container.on('pointerdown', callback);
     }
