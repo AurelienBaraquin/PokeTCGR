@@ -1,0 +1,15 @@
+{
+  "name": "poketcgr",
+  "version": "1.0.0",
+  "description": "Pokemon tcg game like with balanced cards and a campagn",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.88.2"
+  }
+}
