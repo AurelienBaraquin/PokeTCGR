@@ -27,6 +27,17 @@ export class BoardSlot {
             card.setVisibleDetails(true);
         }
     }
+
+    update() {
+        if (!this.isEmpty()) {
+            this.card.container.x = this.x;
+            this.card.container.y = this.y;
+            this.card.container.setScale(this.scale);
+        }
+        this.placeholder.x = this.x;
+        this.placeholder.y = this.y;
+        this.placeholder.setScale(this.scale);
+    }
 }
 
 export default BoardSlot;

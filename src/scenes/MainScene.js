@@ -64,5 +64,6 @@ export class MainScene extends Phaser.Scene {
 
         this.deck.update();
         this.hand.update();
+        this.board.update();
     }    
 }
