@@ -26,18 +26,6 @@ export class Hand extends CardPile {
         }
     }
 
-    updateInteractivity() {
-        this.cards.forEach(card => {
-            card.resetInteractive();
-
-            card.setInteractive({
-                onClick: () => this.handleCardClick(card),
-                onHover: () => this.handleCardHover(card),
-                onOut: () => this.handleCardOut(card)
-            });
-        });
-    }
-
     handleCardClick(card) {
         if (this.selectedCard && this.selectedCard !== card) {
             this.selectedCard.setSelectedEffect(false);
@@ -54,12 +42,14 @@ export class Hand extends CardPile {
     handleCardHover(card) {
         if (card !== this.hoveredCard) {
             card.setHoverEffect(true);
+            card.container.setDepth(this.cards.length);
             this.hoveredCard = card;
         }
     }
 
     handleCardOut(card) {
         card.setHoverEffect(false);
+        card.container.setDepth(this.cards.indexOf(card));
         this.hoveredCard = null;
     }
 

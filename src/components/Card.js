@@ -47,7 +47,6 @@ export class Card {
 
     setHoverEffect(enabled) {
         this.container.setScale(enabled ? this.scale * 1.4 : this.scale);
-        if(enabled) this.container.setDepth(1000);
     }
 
     setSelectedEffect(enabled) {

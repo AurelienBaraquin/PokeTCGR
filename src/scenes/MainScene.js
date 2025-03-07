@@ -9,14 +9,28 @@ export class MainScene extends Phaser.Scene {
 
     preload() {
         this.load.image('dracofeu', 'assets/images/pokemons/dracofeu.png');
+        this.load.image('tortank', 'assets/images/pokemons/tortank.png');
     }
 
     create() {
-        const cardsData = [...Array(60)].map(() => ({
+        const pokemonTypes = [
+            {
             name: 'Dracofeu', hp: 150, type: 'Feu',
-            attacks: [{ name: 'Flammes', damage: 60 }],
+            attacks: [{ name: 'Flammes', damage: 60 }, { name: 'Déflagration', damage: 80 }],
             imageKey: 'dracofeu'
-        }));
+            },
+            {
+            name: 'Tortank', hp: 150, type: 'Eau',
+            attacks: [{ name: 'Hydrocanon', damage: 60 }],
+            imageKey: 'tortank'
+            }
+        ];
+
+        const cardsData = [];
+        for (let i = 0; i < 60; i++) {
+            const randomPokemon = pokemonTypes[Math.floor(Math.random() * pokemonTypes.length)];
+            cardsData.push({ ...randomPokemon });
+        }
     
         this.deck = new Deck(this, 640, 300);
         cardsData.forEach(data => this.deck.addCard(new Card(this, data)));

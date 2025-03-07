@@ -39,6 +39,23 @@ export class CardPile {
     }
 
     updateInteractivity() {
-        this.cards.forEach(card => card.resetInteractive());
+        this.cards.forEach(card => {
+            card.resetInteractive();
+
+            card.setInteractive({
+                onClick: () => this.handleCardClick(card),
+                onHover: () => this.handleCardHover(card),
+                onOut: () => this.handleCardOut(card)
+            });
+        });
+    }
+
+    handleCardClick(card) {
+    }
+
+    handleCardHover(card) {
+    }
+
+    handleCardOut(card) {
     }
 }
