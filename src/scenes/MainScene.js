@@ -12,48 +12,28 @@ export class MainScene extends Phaser.Scene {
     }
 
     create() {
-        const Dracofeu = {
-            name: 'Dracofeu',
-            hp: 150,
-            type: 'Feu',
-            attacks: [
-                { name: 'Flammes', damage: 60 },
-                { name: 'Souffle Feu', damage: 120 }
-            ],
+        const cardsData = [...Array(60)].map(() => ({
+            name: 'Dracofeu', hp: 150, type: 'Feu',
+            attacks: [{ name: 'Flammes', damage: 60 }],
             imageKey: 'dracofeu'
-        };
-
-        const DracofeuX = {
-            name: 'Dracofeu X',
-            hp: 170,
-            type: 'Dragon',
-            attacks: [
-                { name: 'Explosion Dragon', damage: 130 },
-                { name: 'Griffe', damage: 70 }
-            ],
-            imageKey: 'dracofeu'
-        };
-
-        const cards = [Dracofeu, DracofeuX];
-        const cardsData = [...Array(60).keys()].map(() => cards[Math.floor(Math.random() * cards.length)]);
-
-        this.deck = new Deck(this, 640, 300, 1);
-        for (let i = 0; i < cardsData.length; i++) {
-            this.deck.addCard(new Card(this, cardsData[i], 1, 0, 0));
-        }
+        }));
+    
+        this.deck = new Deck(this, 640, 300);
+        cardsData.forEach(data => this.deck.addCard(new Card(this, data)));
         this.deck.shuffle();
-
-        this.hand = new Hand(this, 640, 500, 1);
-        this.deck.setInteractive(() => {
-            const drawnCard = this.deck.drawCard();
-            if (drawnCard) {
-                this.hand.addCard(drawnCard);
-                this.hand.update();
-            }
-            this.deck.update();
-        });
-
+    
+        this.hand = new Hand(this, 640, 500);
+        this.deck.updateInteractivity = () => {
+            const topCard = this.deck.cards.at(-1);
+            topCard?.setInteractive({ onClick: () => {
+                const card = this.deck.drawCard();
+                if (card) {
+                    this.hand.addCard(card);
+                    this.hand.update();
+                }
+            }, onHover: () => {}, onOut: () => {} });
+        };
         this.deck.update();
         this.hand.update();
-    }
+    }    
 }
