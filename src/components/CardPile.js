@@ -19,6 +19,15 @@ export class CardPile {
         return card;
     }
 
+    removeCard(card) {
+        const cardIndex = this.cards.indexOf(card);
+        if (cardIndex !== -1) {
+            this.cards.splice(cardIndex, 1);
+            card.resetInteractive();
+            this.update();
+        }
+    }    
+
     shuffle() {
         Phaser.Utils.Array.Shuffle(this.cards);
         this.update();

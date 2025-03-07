@@ -1,6 +1,7 @@
 import { Card } from '../components/Card.js';
 import { Deck } from '../components/Deck.js';
 import { Hand } from '../components/Hand.js';
+import { Board } from '../components/Board.js';
 
 export class MainScene extends Phaser.Scene {
     constructor() {
@@ -32,11 +33,11 @@ export class MainScene extends Phaser.Scene {
             cardsData.push({ ...randomPokemon });
         }
     
-        this.deck = new Deck(this, 640, 300);
+        this.deck = new Deck(this, 1080, 400);
         cardsData.forEach(data => this.deck.addCard(new Card(this, data)));
         this.deck.shuffle();
     
-        this.hand = new Hand(this, 640, 500);
+        this.hand = new Hand(this, 640, 600);
         this.deck.updateInteractivity = () => {
             const topCard = this.deck.cards.at(-1);
             topCard?.setInteractive({ onClick: () => {
@@ -47,6 +48,20 @@ export class MainScene extends Phaser.Scene {
                 }
             }, onHover: () => {}, onOut: () => {} });
         };
+
+        this.board = new Board(this, 640, 220, 1);
+
+        this.board.slots.forEach(slot => {
+            slot.placeholder.on('pointerdown', () => {
+                if (this.hand.selectedCard && slot.isEmpty()) {
+                    slot.placeCard(this.hand.selectedCard);
+                    this.hand.removeCard(this.hand.selectedCard);
+                    this.hand.selectedCard = null;
+                    this.hand.update();
+                }
+            });
+        });
+
         this.deck.update();
         this.hand.update();
     }    

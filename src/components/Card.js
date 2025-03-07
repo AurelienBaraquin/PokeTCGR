@@ -7,6 +7,8 @@ export class Card {
         this.container = scene.add.container(x, y);
         this.scale = scale;
         this.data = data;
+        this.isHovered = false;
+        this.isSelected = false;
 
         const width = CardWidth();
         const height = CardHeight();
@@ -39,6 +41,8 @@ export class Card {
         this.container.on('pointerdown', callbacks.onClick);
         this.container.on('pointerover', callbacks.onHover);
         this.container.on('pointerout', callbacks.onOut);
+        this.setSelectedEffect(false);
+        this.setHoverEffect(false);
     }
 
     resetInteractive() {
@@ -46,10 +50,14 @@ export class Card {
     }
 
     setHoverEffect(enabled) {
+        if (this.isHovered === enabled) return;
+        this.isHovered = enabled;
         this.container.setScale(enabled ? this.scale * 1.4 : this.scale);
     }
 
     setSelectedEffect(enabled) {
+        if (this.isSelected === enabled) return;
+        this.isSelected = enabled;
         this.container.y += enabled ? -20 : 20;
     }
 }
